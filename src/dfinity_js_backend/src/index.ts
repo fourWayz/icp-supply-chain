@@ -91,7 +91,7 @@ const Payment = Record({
     fee: nat64, // Fee associated with the payment
     status: text, // Current status of the payment
     payer: Principal, // Principal of the payer
-    paid_at_block: Opt(nat64), // Block at which the payment was made
+    paidAtBlock: Opt(nat64), // Block at which the payment was made
     memo: nat64, // Memo associated with the payment
 });
 
@@ -202,7 +202,7 @@ export default Canister({
             fee: BigInt(100), // Example fee, should be calculated based on transaction cost
             status: 'Pending', // Initial status of the payment order
             payer: ic.caller(), // Principal of the payer
-            paid_at_block: None, // Block at which the payment was made
+            paidAtBlock: None, // Block at which the payment was made
             memo: hashCode().value(orderId), // Memo associated with the payment order
         };
         paymentOrders.insert(orderId, paymentOrder); // Insert payment order into storage
