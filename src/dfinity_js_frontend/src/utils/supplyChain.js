@@ -86,9 +86,9 @@ export async function getAllShipments() {
 }
 
 // Function to update product details
-export async function updateProduct(productData) {
+export async function updateProduct(payload,memo,block) {
     try {
-        return await window.canister.marketplace.updateProduct(productData);
+        return await window.canister.marketplace.updateProduct(payload,memo,block);
     } catch (error) {
         console.error("Error updating product:", error);
     }

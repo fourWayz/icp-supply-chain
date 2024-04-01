@@ -30,12 +30,12 @@ const AddProduct = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="productName">
+    <Form onSubmit={handleSubmit} className="my-5">
+      <Form.Group controlId="productName" className="m-2">
         <Form.Label>Product Name</Form.Label>
         <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter product name" />
       </Form.Group>
-      <Form.Group controlId="productDescription">
+      <Form.Group controlId="productDescription" className="m-3">
         <Form.Label>Product Description</Form.Label>
         <Form.Control as="textarea" rows={3} name="description" value={formData.description} onChange={handleChange} placeholder="Enter product description" />
       </Form.Group>
