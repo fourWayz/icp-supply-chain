@@ -3,9 +3,9 @@ import { Principal } from "@dfinity/principal";
 import { transferICP } from "./ledger";
 
 // Function to add a new product
-export async function addProduct(productData) {
+export async function addProduct(payload,memo,block) {
     try {
-        return await window.canister.marketplace.addProduct(productData);
+        return await window.canister.marketplace.addProduct(payload,memo,block);
     } catch (error) {
         console.log(error,'error adding product');
     }
@@ -58,12 +58,30 @@ export async function getProductCount() {
     }
 }
 
+// Function to get total products
+export async function getAllProducts() {
+    try {
+        return await window.canister.marketplace.getProducts();
+    } catch (error) {
+        console.error("Error fetching products:", error);
+    }
+}
+
 // Function to get total shipment count
 export async function getShipmentCount() {
     try {
         return await window.canister.marketplace.getShipmentCount();
     } catch (error) {
         console.error("Error fetching shipment count:", error);
+    }
+}
+
+// Function to get total shipments
+export async function getAllShipments() {
+    try {
+        return await window.canister.marketplace.getShipments();
+    } catch (error) {
+        console.error("Error fetching shipments:", error);
     }
 }
 

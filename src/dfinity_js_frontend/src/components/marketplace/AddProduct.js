@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { addProduct } from '../utils/api';
+import { addProduct } from "../../utils/supplyChain";
+import { toast } from 'react-toastify';
+
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +17,14 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addProduct(formData);
-      // Handle success
-      console.log('Product added successfully');
+      await addProduct(
+        formData,
+        BigInt(0),
+        BigInt(0)
+      );
+      toast.success("Product added successfully")
     } catch (error) {
+      toast.error("Error adding product")
       console.error('Error adding product:', error);
     }
   };
