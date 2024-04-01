@@ -26,9 +26,7 @@ import {
 import { Ledger, binaryAddressFromPrincipal, hexAddressFromPrincipal } from 'azle/canisters/ledger';
 
 //@ts-ignore
-import { hashCode } from 'hashcode';
 import { v4 as uuidv4 } from 'uuid';
-import encodeUtf8 from 'encode-utf8';
 
 // Define types
 
@@ -106,6 +104,20 @@ const Message = Variant({
     Fail: text, // Failure message
 });
 
+// Define a Payload record for updating product details
+const UpdateProductPayload = Record({
+    id: text, // ID of the product to update
+    name: text, // Updated name of the product
+    description: text, // Updated description of the product
+});
+
+// Define a Payload record for cancelling a shipment
+const CancelShipmentPayload = Record({
+    id: text, // ID of the shipment to cancel
+});
+
+
+
 // Define mappings for storage
 const products = StableBTreeMap(0, text, Product); // Mapping for products
 const shipments = StableBTreeMap(1, text, Shipment); // Mapping for shipments
@@ -115,8 +127,6 @@ const paymentOrders = StableBTreeMap(3, text, Payment); // Mapping for payment o
 // Define constants
 const ORDER_RESERVATION_PERIOD = 120n; // Reservation period in seconds
 
-// Define the Ledger canister
-const ledgerCanister = Ledger(Principal.fromText('ryjl3-tyaaa-aaaaa-aaaba-cai'));
 
 // Define the main canister functionality
 export default Canister({
@@ -194,21 +204,6 @@ export default Canister({
         return { Ok: shipment.Some }; // Return shipment details
     }),
 
-    // Create payment order function
-    createPaymentOrder: update([], Result(Payment, Message), () => {
-        const orderId = uuidv4(); // Generate payment order ID
-        const paymentOrder = {
-            orderId, // Assign payment order ID
-            fee: BigInt(100), // Example fee, should be calculated based on transaction cost
-            status: 'Pending', // Initial status of the payment order
-            payer: ic.caller(), // Principal of the payer
-            paid_at_block: None, // Block at which the payment was made
-            memo: hashCode().value(orderId), // Memo associated with the payment order
-        };
-        paymentOrders.insert(orderId, paymentOrder); // Insert payment order into storage
-        discardByTimeout(paymentOrder.memo, ORDER_RESERVATION_PERIOD); // Schedule payment order discard
-        return Ok(paymentOrder); // Return payment order details
-    }),
 
     // Helper function to get the canister address
     getCanisterAddress: query([], text, () => {
@@ -223,20 +218,61 @@ export default Canister({
    // Helper function to get product count
    getProductCount: query([], int32, () => {
     return Number(products.len().toString()); // Return product count
-}),
+    }),
 
-// Helper function to get shipment count
-getShipmentCount: query([], int32, () => {
-    return Number(shipments.len().toString()); // Return shipment count
-}),
+    // Helper function to get shipment count
+    getShipmentCount: query([], int32, () => {
+        return Number(shipments.len().toString()); // Return shipment count
+    }),
+
+    // Update product details function
+    updateProduct: update([UpdateProductPayload, nat64, nat64], Result(Message, Message), async (payload, block, memo) => {
+        const productId = payload.id;
+        const product = products.get(productId); // Retrieve product from storage
+
+        if (!product) { // Check if product exists
+            return Err({ NotFound: `Product with ID ${productId} not found` }); // Return error if product not found
+        }
+
+        // Update product details
+        product.Some.name = payload.name;
+        product.Some.description = payload.description;
+
+        products.insert(productId, product.Some); // Update product in storage
+
+        return Ok({ Success: `Product details updated for ID ${productId}` }); // Return success message
+    }),
+
+    // Cancel shipment function
+    cancelShipment: update([CancelShipmentPayload, nat64, nat64], Result(Message, Message), async (payload, block, memo) => {
+        const shipmentId = payload.id;
+        const shipment = shipments.get(shipmentId); // Retrieve shipment from storage
+
+        if (!shipment) { // Check if shipment exists
+            return Err({ NotFound: `Shipment with ID ${shipmentId} not found` }); // Return error if shipment not found
+        }
+
+        // Check if shipment is cancellable (e.g., pending or in transit)
+        if (shipment.Some.status === 'Pending' || shipment.Some.status === 'In Transit') {
+            shipments.remove(shipmentId); // Remove shipment from storage
+            return Ok({ Success: `Shipment with ID ${shipmentId} cancelled successfully` });
+        } else {
+            return Err({ Fail: `Shipment with ID ${shipmentId} cannot be cancelled` });
+        }
+    }),
+
+
 });
 
-// Utility functions
+// a workaround to make uuid package work with Azle
+globalThis.crypto = {
+    // @ts-ignore
+    getRandomValues: () => {
+        let array = new Uint8Array(32);
 
-// Discard payment order by timeout
-function discardByTimeout(memo: nat64, delay: Duration) {
-    ic.setTimer(delay, () => {
-        const order = paymentOrders.remove(memo); // Remove payment order from storage
-        console.log(`Order discarded ${order}`); // Log discarded payment order
-    });
-}
+        for (let i = 0; i < array.length; i++) {
+            array[i] = Math.floor(Math.random() * 256);
+        }
+        return array;
+    }
+};
