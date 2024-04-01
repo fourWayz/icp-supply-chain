@@ -8,6 +8,5 @@ service: () -> {
     getProductDetails: (text) -> (variant {Ok:record {id:text; manufacturer:text; name:text; description:text; timestamp:nat64}; Err:variant {Fail:text; PaymentFailed:text; InvalidPayload:text; NotFound:text; Success:text; PaymentCompleted:text; Exists:text}}) query;
     getShipmentCount: () -> (int32) query;
     getShipmentDetails: (text) -> (variant {Ok:record {id:text; to:text; status:text; from:text; productId:text; timestamp:nat64}; Err:variant {Fail:text; PaymentFailed:text; InvalidPayload:text; NotFound:text; Success:text; PaymentCompleted:text; Exists:text}}) query;
-    getTransactionHistory: (text) -> (vec record {id:text; timestamp:nat64; shipmentId:text; location:record {latitude:int32; name:text; longitude:int32}}) query;
     updateShipmentStatus: (record {status:text; shipmentId:text}, nat64, nat64) -> (variant {Ok:variant {Fail:text; PaymentFailed:text; InvalidPayload:text; NotFound:text; Success:text; PaymentCompleted:text; Exists:text}; Err:variant {Fail:text; PaymentFailed:text; InvalidPayload:text; NotFound:text; Success:text; PaymentCompleted:text; Exists:text}});
 }
