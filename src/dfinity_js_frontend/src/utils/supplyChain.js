@@ -21,9 +21,9 @@ export async function addShipment(payload,memo,block) {
 }
 
 // Function to update shipment status
-export async function updateShipmentStatus(shipment) {
+export async function updateShipmentStatus(payload,memo,block) {
     try {
-        return await window.canister.marketplace.updateShipmentStatus(shipment);
+        return await window.canister.marketplace.updateShipmentStatus(payload,memo,block);
     } catch (error) {
         console.log(error,'error updating shipment status');
     }

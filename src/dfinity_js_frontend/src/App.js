@@ -11,6 +11,7 @@ import { Notification } from "./components/utils/Notifications";
 import AllProducts from "./components/marketplace/Products";
 import AddProduct from "./components/marketplace/AddProduct";
 import AddShipment from "./components/marketplace/AddShipment";
+import AllShipments from "./components/marketplace/Shipments";
 
 const App = function AppWrapper() {
     const isAuthenticated = window.auth.isAuthenticated;
@@ -54,6 +55,7 @@ const App = function AppWrapper() {
                             </div>
                         </div>
                         <AllProducts />
+                        <AllShipments />
                     </main>
                 </Container>
             ) : (

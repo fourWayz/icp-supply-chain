@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { getAllShipments } from '../utils/api';
+import React, { useState,useEffect } from "react";
+import { Card, Button,Row,Modal } from 'react-bootstrap';
 import UpdateShipment from './UpdateShipment';
+import { getAllShipments } from '../../utils/supplyChain';
 
 const AllShipments = () => {
   const [shipments, setShipments] = useState([]);
@@ -32,7 +32,7 @@ const AllShipments = () => {
       {shipments.map((shipment) => (
         <Card key={shipment.id} style={{ width: '18rem' }}>
           <Card.Body className="shadow">
-            <Card.Title>Shipment ID: {shipment.id}</Card.Title>
+            <Card.Title>Shipment ID: <span>{shipment.id}</span></Card.Title>
             <Card.Text>
               From: {shipment.from}<br />
               To: {shipment.to}<br />
@@ -48,7 +48,7 @@ const AllShipments = () => {
       {/* Modal for updating shipment */}
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Update Product</Modal.Title>
+          <Modal.Title>Update Shipment Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         {selectedShipment && <UpdateShipment shipment={selectedShipment} />}
