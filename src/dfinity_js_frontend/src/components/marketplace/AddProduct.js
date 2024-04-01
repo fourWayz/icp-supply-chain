@@ -22,7 +22,12 @@ const AddProduct = () => {
         BigInt(0),
         BigInt(0)
       );
+      
       toast.success("Product added successfully")
+      
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000); 
     } catch (error) {
       toast.error("Error adding product")
       console.error('Error adding product:', error);

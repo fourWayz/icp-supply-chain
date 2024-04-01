@@ -12,6 +12,8 @@ import AllProducts from "./components/marketplace/Products";
 import AddProduct from "./components/marketplace/AddProduct";
 import AddShipment from "./components/marketplace/AddShipment";
 import AllShipments from "./components/marketplace/Shipments";
+import NavBar from "./components/marketplace/Navbar";
+import Footer from "./components/marketplace/Footer";
 
 const App = function AppWrapper() {
     const isAuthenticated = window.auth.isAuthenticated;
@@ -46,6 +48,7 @@ const App = function AppWrapper() {
                         </Nav.Item>
                     </Nav>
                     <main>
+                        <NavBar />
                         <div className="row justify-content-center align-items-center">
                             <div className="col-md-6">
                                 <AddProduct />
@@ -57,6 +60,7 @@ const App = function AppWrapper() {
                         <AllProducts />
                         <AllShipments />
                     </main>
+                <Footer />
                 </Container>
             ) : (
                 <Cover name="Street Foods" login={login} coverImg={coverImg} />
