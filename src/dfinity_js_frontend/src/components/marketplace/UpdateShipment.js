@@ -1,19 +1,20 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { updateShipmentStatus } from '../utils/api';
+import { toast } from 'react-toastify';
 
-const UpdateShipment = () => {
-  const [shipmentId, setShipmentId] = useState('');
-  const [status, setStatus] = useState('');
+const UpdateShipment = ({shipment}) => {
+  const [shipmentId, setShipmentId] = useState(shipment.id);
+  const [status, setStatus] = useState(shipment.status);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await updateShipmentStatus({ shipmentId, status });
-      // Handle success
-      console.log('Shipment status updated successfully');
+      toast.success('Shipment status updated successfully');
     } catch (error) {
-      console.error('Error updating shipment status:', error);
+      toast.error('Error updating shipment status');
     }
   };
 
