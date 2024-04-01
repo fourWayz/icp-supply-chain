@@ -8,9 +8,9 @@ import { login, logout as destroy } from "./utils/auth";
 import { balance as principalBalance } from "./utils/ledger"
 import Cover from "./components/utils/Cover";
 import { Notification } from "./components/utils/Notifications";
-// import Header from "./components/marketplace/Header";
 import AllProducts from "./components/marketplace/Products";
 import AddProduct from "./components/marketplace/AddProduct";
+import AddShipment from "./components/marketplace/AddShipment";
 
 const App = function AppWrapper() {
     const isAuthenticated = window.auth.isAuthenticated;
@@ -45,7 +45,14 @@ const App = function AppWrapper() {
                         </Nav.Item>
                     </Nav>
                     <main>
-                      <AddProduct />
+                        <div className="row justify-content-center align-items-center">
+                            <div className="col-md-6">
+                                <AddProduct />
+                            </div>
+                            <div className="col-md-6">
+                                <AddShipment />
+                            </div>
+                        </div>
                         <AllProducts />
                     </main>
                 </Container>

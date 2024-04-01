@@ -12,9 +12,9 @@ export async function addProduct(payload,memo,block) {
 }
 
 // Function to add a new shipment
-export async function addShipment(shipmentData) {
+export async function addShipment(payload,memo,block) {
     try {
-        return await window.canister.marketplace.addShipment(shipmentData);
+        return await window.canister.marketplace.addShipment(payload,memo,block);
     } catch (error) {
         console.log(error,'error adding shipment');
     }

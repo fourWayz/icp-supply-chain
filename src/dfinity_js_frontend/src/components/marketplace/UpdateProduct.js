@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from 'react-bootstrap';
 import { updateProduct } from "../../utils/supplyChain";
+import { toast } from "react-toastify";
 
 const UpdateProduct = ({ product }) => {
   const [updatedName, setUpdatedName] = useState(product.name);
@@ -33,12 +34,12 @@ const UpdateProduct = ({ product }) => {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="updatedName">
+    <Form onSubmit={handleSubmit} className="m-2">
+      <Form.Group controlId="updatedName" className="m-2">
         <Form.Label>Name</Form.Label>
         <Form.Control type="text" value={updatedName} onChange={handleNameChange} />
       </Form.Group>
-      <Form.Group controlId="updatedDescription">
+      <Form.Group controlId="updatedDescription" className="m-2">
         <Form.Label>Description</Form.Label>
         <Form.Control as="textarea" rows={3} value={updatedDescription} onChange={handleDescriptionChange} />
       </Form.Group>

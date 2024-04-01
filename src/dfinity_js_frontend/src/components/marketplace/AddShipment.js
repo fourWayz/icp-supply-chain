@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import { Form, Button } from 'react-bootstrap';
-import { addShipment } from '../utils/api';
+import { toast } from 'react-toastify';
+import { addShipment } from "../../utils/supplyChain";
 
 const AddShipment = () => {
   const [formData, setFormData] = useState({
@@ -16,11 +17,13 @@ const AddShipment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addShipment(formData);
-      // Handle success
-      console.log('Shipment added successfully');
+      await addShipment(
+        formData,
+        BigInt(0),
+        BigInt(0));
+      toast.success('Shipment added successfully')
     } catch (error) {
-      console.error('Error adding shipment:', error);
+      toast.error('Error adding shipment')
     }
   };
 
@@ -38,7 +41,7 @@ const AddShipment = () => {
         <Form.Label>To</Form.Label>
         <Form.Control type="text" name="to" value={formData.to} onChange={handleChange} placeholder="Enter destination" />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button variant="primary" type="submit" className="m-2">
         Add Shipment
       </Button>
     </Form>
