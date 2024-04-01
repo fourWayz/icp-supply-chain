@@ -1,93 +1,86 @@
+// Import necessary modules and libraries
 import { Principal } from "@dfinity/principal";
 import { transferICP } from "./ledger";
 
-
+// Function to add a new product
 export async function addProduct(productData) {
     try {
         return await window.canister.marketplace.addProduct(productData);
     } catch (error) {
-        console.log(err,'error adding product')
+        console.log(error,'error adding product');
     }
 }
 
+// Function to add a new shipment
 export async function addShipment(shipmentData) {
     try {
         return await window.canister.marketplace.addShipment(shipmentData);
     } catch (error) {
-        console.log(err,'error adding shipment')
+        console.log(error,'error adding shipment');
     }
 }
 
+// Function to update shipment status
 export async function updateShipmentStatus(shipment) {
     try {
         return await window.canister.marketplace.updateShipmentStatus(shipment);
     } catch (error) {
-        console.log(err,'error adding shipment')
+        console.log(error,'error updating shipment status');
     }
 }
 
-
-
-export async function buyCourse(courseId) {
-  const courseCanister = window.canister.marketplace;
-  const orderResponse = await marketplace.createOrder(courseId);
-  const sellerPrincipal = Principal.from(orderResponse.Ok.seller);
-  const sellerAddress = await courseCanister.getAddressFromPrincipal(sellerPrincipal);
-  const block = await transferICP(sellerAddress, orderResponse.Ok.price, orderResponse.Ok.memo);
-  await courseCanister.completePurchase(sellerPrincipal, courseId, orderResponse.Ok.price, block, orderResponse.Ok.memo);
-}
-
+// Function to get product details by ID
 export async function getProductDetails(productId) {
-  try {
-    return await window.canister.marketplace.getProductDetails(productId);
-  } catch (err) {
-    console.log(err, 'Error fetching product details')
-    return [];
-  }
+    try {
+        return await window.canister.marketplace.getProductDetails(productId);
+    } catch (error) {
+        console.log(error, 'Error fetching product details');
+        return [];
+    }
 }
 
+// Function to get shipment details by ID
 export async function getShipmentDetails(shipmentId) {
-  try {
-    return await window.canister.marketplace.getShipmentDetails(shipmentId);
-  } catch (err) {
-    console.error("Error fetching shipment details:", err);
-    return [];
-  }
+    try {
+        return await window.canister.marketplace.getShipmentDetails(shipmentId);
+    } catch (error) {
+        console.error("Error fetching shipment details:", error);
+        return [];
+    }
 }
 
+// Function to get total product count
 export async function getProductCount() {
-  try {
-    return await window.canister.marketplace.getProductCount();
-  } catch (err) {
-    console.error("Error fetching product count:", err);
-  }
+    try {
+        return await window.canister.marketplace.getProductCount();
+    } catch (error) {
+        console.error("Error fetching product count:", error);
+    }
 }
 
+// Function to get total shipment count
 export async function getShipmentCount() {
     try {
-      return await window.canister.marketplace.getShipmentCount();
-    } catch (err) {
-      console.error("Error fetching shipment count:", err);
+        return await window.canister.marketplace.getShipmentCount();
+    } catch (error) {
+        console.error("Error fetching shipment count:", error);
     }
 }
 
+// Function to update product details
 export async function updateProduct(productData) {
     try {
-      return await window.canister.marketplace.updateProduct(productData);
-    } catch (err) {
-      console.error("Error updating product:", err);
+        return await window.canister.marketplace.updateProduct(productData);
+    } catch (error) {
+        console.error("Error updating product:", error);
     }
 }
 
+// Function to cancel a shipment
 export async function cancelShipment(shipmentId) {
     try {
-      return await window.canister.marketplace.cancelShipment(shipmentId);
-    } catch (err) {
-      console.error("Error cancelling shipment:", err);
+        return await window.canister.marketplace.cancelShipment(shipmentId);
+    } catch (error) {
+        console.error("Error cancelling shipment:", error);
     }
 }
-
-
-
-
-
