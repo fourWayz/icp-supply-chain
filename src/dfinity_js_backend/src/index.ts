@@ -121,11 +121,6 @@ const CancelShipmentPayload = Record({
 // Define mappings for storage
 const products = StableBTreeMap(0, text, Product); // Mapping for products
 const shipments = StableBTreeMap(1, text, Shipment); // Mapping for shipments
-const transactions = StableBTreeMap(2, text, Vec(Transaction)); // Mapping for transactions
-const paymentOrders = StableBTreeMap(3, text, Payment); // Mapping for payment orders
-
-// Define constants
-const ORDER_RESERVATION_PERIOD = 120n; // Reservation period in seconds
 
 
 // Define the main canister functionality
@@ -191,7 +186,11 @@ export default Canister({
         
         return Ok(product.Some); // Return product details
     }),
-      
+
+    // get all products function
+    getProducts: query([], Vec(Product), () => {
+        return products.values();
+    }),
 
     // Get shipment details function
     getShipmentDetails: query([text], Result(Shipment, Message), (shipmentId) => {
@@ -204,6 +203,10 @@ export default Canister({
         return { Ok: shipment.Some }; // Return shipment details
     }),
 
+    // get all shipments function
+    getShipments: query([], Vec(Shipment), () => {
+        return shipments.values();
+    }),
 
     // Helper function to get the canister address
     getCanisterAddress: query([], text, () => {
